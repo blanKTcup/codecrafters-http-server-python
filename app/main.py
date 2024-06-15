@@ -1,15 +1,18 @@
-# Uncomment this to pass the first stage
 import socket
 
 
 def main():
-    # You can use print statements as follows for debugging, they'll be visible when running tests.
-    print("Logs from your program will appear here!")
+    # Creates a TCP/IP socket
+    with socket.create_server(("localhost", 4221), reuse_port=True) as server_socket:
+      # Wait for a connection
+      print("Waiting for a connection...")
+      connection, address = server_socket.accept() # wait for client
+      
+      print(f"Accepted connection from {address}")
 
-    # Uncomment this to pass the first stage
-    
-    server_socket = socket.create_server(("localhost", 4221), reuse_port=True)
-    server_socket.accept() # wait for client
+      # Sends a 200 OK response
+      response = "HTTP/1.1 200 OK\r\n\r\n"
+      connection.sendall(response.encode())
 
 
 if __name__ == "__main__":
